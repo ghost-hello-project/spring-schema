@@ -1,6 +1,5 @@
 package com.laolang.jx.module.system.dict.controller;
 
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +19,7 @@ public class SysDictController {
 
     private final SysDictLogic sysDictLogic;
 
-    @PostMapping(value = "type/list", consumes = MediaType.APPLICATION_XML_VALUE, produces = MediaType.APPLICATION_XML_VALUE)
+    @PostMapping(value = "type/list")
     public R<SysDictTypeListRsp> typeList(@RequestBody SysDictTypeListReq req) {
         return R.ok(sysDictLogic.typeList(req));
     }
