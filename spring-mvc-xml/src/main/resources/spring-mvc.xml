@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context" xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd">
+
+
+    <context:component-scan base-package="com.laolang.jx.**.controller" use-default-filters="false">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+    </context:component-scan>
+
+
+    <!-- 注解驱动 -->
+    <mvc:annotation-driven>
+        <mvc:message-converters>
+            <bean class="org.springframework.http.converter.xml.MappingJackson2XmlHttpMessageConverter">
+                <property name="objectMapper" ref="xmlMapper" />
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+
+    <!-- Jackson ObjectMapper 配置 -->
+    <bean id="xmlMapper" class="org.springframework.http.converter.json.Jackson2ObjectMapperFactoryBean">
+        <!-- 自定义 XmlMapper 的 Factory, 主要是为了启用一些 Feature -->
+        <property name="factory">
+            <bean class="com.laolang.jx.framework.web.jackson.factory.CustomXmlFactory" />
+        </property>
+        <!-- 创建 XmlMapper , 默认为 false, 创建的是 ObjectMapper -->
+        <property name="createXmlMapper" value="true" />
+        <!-- 注册自定义 Module -->
+        <property name="modulesToInstall">
+            <array>
+                <value>com.laolang.jx.framework.web.jackson.module.LongModule</value>
+                <value>com.laolang.jx.framework.web.jackson.module.Jdk8TimeModule</value>
+                <value>com.laolang.jx.framework.web.jackson.module.BigDecimalModule</value>
+            </array>
+        </property>
+    </bean>
+</beans>
